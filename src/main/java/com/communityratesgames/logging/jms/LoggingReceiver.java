@@ -1,17 +1,17 @@
 package com.communityratesgames.logging.jms;
 
+import com.communityratesgames.logging.dao.DataAccessLocal;
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
-
-//@MessageDriven(activationConfig = {@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/crgQueue")})
 
 @MessageDriven(name = "MDB", activationConfig = {
         @ActivationConfigProperty(propertyName = "acknowledgeMode",
@@ -24,6 +24,9 @@ import javax.jms.TextMessage;
 public class LoggingReceiver implements MessageListener {
 
     private final static Logger logger = Logger.getLogger(com.communityratesgames.logging.jms.LoggingReceiver.class);
+
+    @Inject
+    DataAccessLocal dal;
 
     @Resource
     private MessageDrivenContext messageDrivenContext;
