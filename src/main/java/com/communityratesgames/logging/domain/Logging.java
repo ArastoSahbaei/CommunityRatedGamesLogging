@@ -1,15 +1,13 @@
 package com.communityratesgames.logging.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@ToString
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +20,12 @@ public class Logging implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private Long id;
+    @Column(name="logintime")
     private Timestamp recieved;
     @Lob
-    @Column(name="message", columnDefinition = "text")
-    private String message;
+    @Column(name="user", columnDefinition = "text")
+    private String user;
 
-    @NotNull
-    @Column(name="recieved")
     public Timestamp getTimestamp() {
         return new Timestamp(System.currentTimeMillis());
     }
@@ -49,11 +46,11 @@ public class Logging implements Serializable {
         this.recieved = recieved;
     }
 
-    public String getMessage() {
-        return this.message;
+    public String getUser() {
+        return this.user;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setUser(String user) {
+        this.user = user;
     }
 }

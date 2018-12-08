@@ -1,6 +1,8 @@
 package com.communityratesgames.logging.jms;
 
 import com.communityratesgames.logging.dao.DataAccessLocal;
+import com.communityratesgames.logging.domain.Logging;
+import com.communityratesgames.logging.model.LoggingModel;
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
@@ -25,6 +27,8 @@ public class LoggingReceiver implements MessageListener {
 
     private final static Logger logger = Logger.getLogger(com.communityratesgames.logging.jms.LoggingReceiver.class);
 
+    LoggingModel loggingModel = new LoggingModel();
+
     @Inject
     DataAccessLocal dal;
 
@@ -35,11 +39,12 @@ public class LoggingReceiver implements MessageListener {
     @Override
     public void onMessage(Message message) {
         TextMessage msg;
-        logger.info("ONMESSAGE IN RECEIVER: " + message);
         try {
             if ( message instanceof TextMessage ) {
                 msg = (TextMessage) message;
-                logger.info("Message Bean: " + msg.getText());
+                String temp = msg.getBody(String.class);
+                Logging log = loggingModel.toEntity(temp);
+                dal.addNewLog(log);
             } else {
                 logger.warn("Message not a text message!!!!!" + message.getClass().getName());
             }
