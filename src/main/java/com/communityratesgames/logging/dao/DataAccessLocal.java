@@ -1,6 +1,7 @@
 package com.communityratesgames.logging.dao;
 
 import com.communityratesgames.logging.domain.Logging;
+import com.communityratesgames.logging.domain.UserStatistic;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -10,4 +11,7 @@ public interface DataAccessLocal {
 
     public Logging addNewLog(Logging log);
     public List<Logging> showAllLogs();
+
+    public List<Logging> showStatistic(String name);
+    public String findUser(String name);
 }

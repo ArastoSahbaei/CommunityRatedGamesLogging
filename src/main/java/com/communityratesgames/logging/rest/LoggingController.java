@@ -2,6 +2,7 @@ package com.communityratesgames.logging.rest;
 
 import com.communityratesgames.logging.dao.DataAccessLocal;
 import com.communityratesgames.logging.domain.Logging;
+import com.communityratesgames.logging.domain.UserStatistic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +42,29 @@ public class LoggingController {
             return Response.ok(result).build();
         } catch ( Exception e ) {
             return Response.status(404).build();
+        }
+    }
+
+    @GET
+    @Produces("application/JSON")
+    @Path("/search")
+    public Response findUser(@QueryParam("name") String name ) {
+        try {
+            String result = dal.findUser(name);
+            return Response.ok(result).build();
+        } catch ( Exception e) {
+            return Response.status(401).build();
+        }
+    }
+
+    @GET
+    @Produces("application/JSON")
+    public Response showStatisticAboutAUser(String name) {
+        try {
+            List<Logging> statistic = dal.showStatistic(name);
+            return null;
+        } catch (Exception e ) {
+            return Response.status(402).build();
         }
     }
 }

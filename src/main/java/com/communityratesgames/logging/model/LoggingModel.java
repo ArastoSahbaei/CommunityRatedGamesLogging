@@ -2,10 +2,6 @@ package com.communityratesgames.logging.model;
 
 import com.communityratesgames.logging.domain.Logging;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
 import java.sql.Timestamp;
 
 public class LoggingModel {
@@ -14,7 +10,6 @@ public class LoggingModel {
     private String user;
 
     public LoggingModel() {}
-
 
     public Logging toEntity(String input) {
         Logging log = new Logging();

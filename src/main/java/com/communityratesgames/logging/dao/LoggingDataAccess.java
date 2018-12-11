@@ -1,6 +1,7 @@
 package com.communityratesgames.logging.dao;
 
 import com.communityratesgames.logging.domain.Logging;
+import com.communityratesgames.logging.domain.UserStatistic;
 import com.communityratesgames.logging.transactions.LoggingDataMethods;
 
 import javax.ejb.Stateless;
@@ -18,4 +19,10 @@ public class LoggingDataAccess implements DataAccessLocal, DataAccessRemote {
 
     @Override
     public List<Logging> showAllLogs() {return loggingDataMethods.showAllLogs();}
+
+    @Override
+    public List<Logging> showStatistic(String name) { return loggingDataMethods.showStatistic(name);}
+
+    @Override
+    public String findUser(String name) {return loggingDataMethods.findUser(name);}
 }
