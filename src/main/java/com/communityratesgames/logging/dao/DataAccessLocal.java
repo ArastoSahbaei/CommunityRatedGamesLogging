@@ -1,7 +1,6 @@
 package com.communityratesgames.logging.dao;
 
 import com.communityratesgames.logging.domain.Logging;
-import com.communityratesgames.logging.domain.UserStatistic;
 
 import javax.ejb.Local;
 import java.util.List;

@@ -4,6 +4,7 @@ import com.communityratesgames.logging.domain.Logging;
 import com.communityratesgames.logging.domain.UserStatistic;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -17,6 +18,8 @@ import java.util.List;
 @Stateless
 @Default
 public class LoggingTransaction implements LoggingDataMethods {
+
+    private final static Logger logger = Logger.getLogger(com.communityratesgames.logging.transactions.LoggingTransaction.class);
 
     @PersistenceContext(unitName = "communityratesgameslogging")
     private EntityManager em;
@@ -42,31 +45,9 @@ public class LoggingTransaction implements LoggingDataMethods {
 
     @Override
     public String findUser(String name) {
-        List<Logging> results = em.createQuery("SELECT DISTINCT u.user FROM Logging u WHERE u.user LIKE :name",Logging.class)
+        List<String> results = em.createQuery("SELECT DISTINCT u.user FROM Logging u WHERE u.user LIKE :name",String.class)
                 .setParameter("name", name+'%')
-                .setMaxResults(5)
                 .getResultList();
-        return showName(results);
-    }
-
-    private String showName(List<Logging> userList) {
-        JsonFactory factory = new JsonFactory();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            JsonGenerator jgen = factory.createGenerator(outputStream);
-            jgen.writeStartArray();
-            for (Logging user:userList
-            ) {
-                jgen.writeStartObject();
-                jgen.writeObjectField("name", user.getUser());
-                jgen.writeEndObject();
-            }
-            jgen.writeEndArray();
-            jgen.close();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputStream.toString();
+        return results.toString();
     }
 }

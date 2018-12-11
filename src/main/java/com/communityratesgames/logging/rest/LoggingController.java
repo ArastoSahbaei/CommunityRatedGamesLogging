@@ -51,9 +51,10 @@ public class LoggingController {
     public Response findUser(@QueryParam("name") String name ) {
         try {
             String result = dal.findUser(name);
+            System.out.println(result);
             return Response.ok(result).build();
         } catch ( Exception e) {
-            return Response.status(401).build();
+            return Response.status(404).build();
         }
     }
 
