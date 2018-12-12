@@ -5,6 +5,7 @@ import com.communityratesgames.logging.domain.Logging;
 import com.communityratesgames.logging.domain.UserStatistic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,6 +17,8 @@ import java.util.List;
 @Stateless
 @Path("/logs")
 public class LoggingController {
+
+    private final static Logger logger = Logger.getLogger(com.communityratesgames.logging.transactions.LoggingTransaction.class);
 
     @Inject
     private DataAccessLocal dal;
@@ -51,19 +54,21 @@ public class LoggingController {
     public Response findUser(@QueryParam("name") String name ) {
         try {
             String result = dal.findUser(name);
-            System.out.println(result);
             return Response.ok(result).build();
         } catch ( Exception e) {
             return Response.status(404).build();
         }
     }
 
-    @GET
+    @POST
     @Produces("application/JSON")
+    @Path("/statistic")
     public Response showStatisticAboutAUser(String name) {
         try {
-            List<Logging> statistic = dal.showStatistic(name);
-            return null;
+            ObjectMapper mapper = new ObjectMapper();
+            Logging logs = mapper.readValue(name, Logging.class);
+            Long statistic = dal.showStatistic(logs);
+            return Response.ok(statistic).build();
         } catch (Exception e ) {
             return Response.status(402).build();
         }

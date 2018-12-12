@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Stateless
@@ -39,15 +41,41 @@ public class LoggingTransaction implements LoggingDataMethods {
     }
 
     @Override
-    public List<Logging> showStatistic(String name) {
-        return null;
+    public Long showStatistic(Logging name) {
+        Long query = em.createQuery("SELECT COUNT(l.recieved) FROM Logging l WHERE l.user = :name", Long.class)
+                .setParameter("name", name.getUser())
+                .getSingleResult();
+
+        return query;
     }
 
     @Override
     public String findUser(String name) {
-        List<String> results = em.createQuery("SELECT DISTINCT u.user FROM Logging u WHERE u.user LIKE :name",String.class)
+        List<String> results = em.createQuery("SELECT DISTINCT l.user FROM Logging l WHERE l.user LIKE :name",String.class)
                 .setParameter("name", name+'%')
+                .setMaxResults(5)
                 .getResultList();
-        return results.toString();
+        return reduceUserList(results);
+    }
+
+    private String reduceUserList(List<String> userList) {
+        JsonFactory factory = new JsonFactory();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            JsonGenerator jgen = factory.createGenerator(outputStream);
+            jgen.writeStartArray();
+            for (String user:userList
+            ) {
+                jgen.writeStartObject();
+                jgen.writeObjectField("user",user);
+                jgen.writeEndObject();
+            }
+            jgen.writeEndArray();
+            jgen.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream.toString();
     }
 }

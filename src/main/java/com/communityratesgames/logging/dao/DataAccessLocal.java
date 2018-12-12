@@ -11,6 +11,6 @@ public interface DataAccessLocal {
     public Logging addNewLog(Logging log);
     public List<Logging> showAllLogs();
 
-    public List<Logging> showStatistic(String name);
+    public Long showStatistic(Logging name);
     public String findUser(String name);
 }

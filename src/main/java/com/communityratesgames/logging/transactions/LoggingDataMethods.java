@@ -11,6 +11,6 @@ public interface LoggingDataMethods {
 
     public abstract Logging addNewLog(Logging log);
     public abstract List<Logging> showAllLogs();
-    public abstract List<Logging> showStatistic(String name);
+    public abstract Long showStatistic(Logging name);
     public abstract String findUser(String name);
 }

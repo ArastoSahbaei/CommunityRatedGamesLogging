@@ -21,7 +21,7 @@ public class LoggingDataAccess implements DataAccessLocal, DataAccessRemote {
     public List<Logging> showAllLogs() {return loggingDataMethods.showAllLogs();}
 
     @Override
-    public List<Logging> showStatistic(String name) { return loggingDataMethods.showStatistic(name);}
+    public Long showStatistic(Logging name) { return loggingDataMethods.showStatistic(name);}
 
     @Override
     public String findUser(String name) {return loggingDataMethods.findUser(name);}
